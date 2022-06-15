@@ -2,6 +2,6 @@ import React from 'react'
 import Content from './components/Content.jsx';
 
 
-const App = () => <div> <Content text="A simple flux implementation with React" /> </div>   
+const App = () => <div> <Content text="Uma implementação simples de Flux com React" /> </div>   
 
 export default App;
