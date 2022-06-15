@@ -9,16 +9,17 @@ class Content extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { articles: [], articlesApproved: [], message: '' };
+        this.state = { articles: [], articlesApproved: [], message: ''};
         this.handleClick = this.handleClick.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onRemove = this.onRemove.bind(this);
     }
 
     handleClick() {
-        if (document.getElementById('simpletext').value.length > 0 && this.state.articles.length < 10) {
-            AppActions.submitArticle(document.getElementById('simpletext').value)
-            document.getElementById('simpletext').value = ''
+        const title = document.getElementById('simpletext').value;
+        if (title.length > 0 && this.state.articles.length < 10) {
+            AppActions.submitArticle({ title });
+            document.getElementById('simpletext').value = '';
         }
     }
 
@@ -33,7 +34,7 @@ class Content extends React.Component {
 
 
     onSubmit() {
-         this.listArticles()
+        this.listArticles()
     }
 
     listArticles()
@@ -41,7 +42,7 @@ class Content extends React.Component {
         let usermessage = ''
 
         if (this.state.articles.length > 9) {
-            usermessage = 'You have exceeded the number of articles you can submit,You cannot add more articles'
+            usermessage = 'Você excedeu o número máximo de artigos.'
         }
 
         this.setState({
@@ -52,21 +53,22 @@ class Content extends React.Component {
     }
 
     componentWillUnmount() {
-        AppStore.removeChangeListener('STORE_SUBMIT_ARTICLE', this.onChange)
-         AppStore.removeChangeListener('STORE_REMOVE_ARTICLE', this.onRemove)
+        AppStore.removeChangeListener('STORE_SUBMIT_ARTICLE', this.onChange);
+        AppStore.removeChangeListener('STORE_REMOVE_ARTICLE', this.onRemove);
     }
 
     render() {
         var simpleContent =
             <div>
-                {this.props.text}
+                <h1>{this.props.text}</h1>
                 <br />
-                Enter text : <input type="text" name="simpletext" id="simpletext" />
-                <Button handleClick={this.handleClick} text="SUBMIT" />
                 <br />
-                <List articles={this.state.articles} listHeader="Submitted Articles" />
+                Digite o Título do Artigo: <input type="text" name="simpletext" id="simpletext" />  
+                <Button handleClick={this.handleClick} text="ENVIAR" />
+                <br />
+                <List articles={this.state.articles} listHeader="Artigos Enviados" />
                 {this.state.message}
-                <List articles={this.state.articlesApproved} listHeader="Approval Status" />
+                <List articles={this.state.articlesApproved} listHeader="Artigos Aprovados" />
             </div>;
 
         return simpleContent;
